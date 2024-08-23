@@ -1,0 +1,280 @@
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bikeability, Median Home Prices, and Happiness Scores</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #e0e0e0; /* Updated background to a slightly darker grey */
+        }
+        h1, h2 {
+            color: #333;
+            font-weight: 700;
+            text-align: center;
+        }
+        p {
+            font-weight: 300;
+            line-height: 1.6;
+        }
+        .content {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc; /* Adjusted grey to be consistent with darker background */
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #d9d9d9; /* Darkened grey for table headers */
+            font-weight: 500;
+        }
+        .chart-container {
+            margin-top: 20px;
+            height: 400px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .citations {
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #555;
+        }
+    </style>
+
+
+
+<div class="content">
+    <h1>Analysis of Bikeability, Median Home Prices, and Happiness Scores</h1>
+    <p>This analysis, based on data from 2024, explores the relationship between bikeability scores, median home prices, and happiness scores in selected U.S. cities. The table below presents the data:</p>
+    
+    <table>
+        <tbody><tr>
+            <th>City</th>
+            <th>Bikeability Score</th>
+            <th>Median Sales Price</th>
+            <th>Happiness Score</th>
+        </tr>
+        <tr>
+            <td>Minneapolis, MN</td>
+            <td>84</td>
+            <td>$320,400</td>
+            <td>69.7</td>
+        </tr>
+        <tr>
+            <td>Portland, OR</td>
+            <td>83</td>
+            <td>$490,000</td>
+            <td>67.5</td>
+        </tr>
+        <tr>
+            <td>San Francisco, CA</td>
+            <td>72</td>
+            <td>$1,190,000</td>
+            <td>72.3</td>
+        </tr>
+        <tr>
+            <td>Chicago, IL</td>
+            <td>72</td>
+            <td>$322,500</td>
+            <td>65.8</td>
+        </tr>
+        <tr>
+            <td>Denver, CO</td>
+            <td>72</td>
+            <td>$530,000</td>
+            <td>67.4</td>
+        </tr>
+        <tr>
+            <td>Seattle, WA</td>
+            <td>71</td>
+            <td>$775,000</td>
+            <td>70.1</td>
+        </tr>
+        <tr>
+            <td>Long Beach, CA</td>
+            <td>70</td>
+            <td>$795,000</td>
+            <td>63.9</td>
+        </tr>
+        <tr>
+            <td>Washington, D.C.</td>
+            <td>70</td>
+            <td>$600,000</td>
+            <td>66.2</td>
+        </tr>
+        <tr>
+            <td>Boston, MA</td>
+            <td>69</td>
+            <td>$830,000</td>
+            <td>68.9</td>
+        </tr>
+        <tr>
+            <td>New York, NY</td>
+            <td>69</td>
+            <td>$800,000</td>
+            <td>66.0</td>
+        </tr>
+    </tbody></table>
+
+    <h2>Analysis</h2>
+    <p>The data shows a variety of relationships between bikeability scores, median home prices, and happiness scores across different cities. The charts below further explore these relationships.</p>
+
+    <p style="margin-bottom: 20px;"></p> <!-- Added cushion space -->
+
+    <div class="chart-container">
+        <canvas id="bikeabilityVsPriceChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="bikeabilityVsHappinessChart"></canvas>
+    </div>
+
+    <script>
+        // Bikeability vs Median Sales Price
+        var ctx1 = document.getElementById('bikeabilityVsPriceChart').getContext('2d');
+        var bikeabilityVsPriceChart = new Chart(ctx1, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Hover over the points to see city details',
+                    data: [
+                        {x: 84, y: 320400, city: "Minneapolis, MN"},
+                        {x: 83, y: 490000, city: "Portland, OR"},
+                        {x: 72, y: 1190000, city: "San Francisco, CA"},
+                        {x: 72, y: 322500, city: "Chicago, IL"},
+                        {x: 72, y: 530000, city: "Denver, CO"},
+                        {x: 71, y: 775000, city: "Seattle, WA"},
+                        {x: 70, y: 795000, city: "Long Beach, CA"},
+                        {x: 70, y: 600000, city: "Washington, D.C."},
+                        {x: 69, y: 830000, city: "Boston, MA"},
+                        {x: 69, y: 800000, city: "New York, NY"}
+                    ],
+                    backgroundColor: '#4013f5',
+                    borderColor: '#4013f5',
+                    borderWidth: 1,
+                    showLine: false,
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Bikeability Score'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Median Sales Price (USD)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.raw.city || '';
+                                label += `: Bikeability Score ${context.raw.x}, Median Sales Price $${context.raw.y.toLocaleString()}`;
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bikeability vs Happiness Score
+        var ctx2 = document.getElementById('bikeabilityVsHappinessChart').getContext('2d');
+        var bikeabilityVsHappinessChart = new Chart(ctx2, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Hover over the points to see city details',
+                    data: [
+                        {x: 84, y: 69.7, city: "Minneapolis, MN"},
+                        {x: 83, y: 67.5, city: "Portland, OR"},
+                        {x: 72, y: 72.3, city: "San Francisco, CA"},
+                        {x: 72, y: 65.8, city: "Chicago, IL"},
+                        {x: 72, y: 67.4, city: "Denver, CO"},
+                        {x: 71, y: 70.1, city: "Seattle, WA"},
+                        {x: 70, y: 63.9, city: "Long Beach, CA"},
+                        {x: 70, y: 66.2, city: "Washington, D.C."},
+                        {x: 69, y: 68.9, city: "Boston, MA"},
+                        {x: 69, y: 66.0, city: "New York, NY"}
+                    ],
+                    backgroundColor: '#4e714a',
+                    borderColor: '#4e714a',
+                    borderWidth: 1,
+                    showLine: false,
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Bikeability Score'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Happiness Score'
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.raw.city || '';
+                                label += `: Bikeability Score ${context.raw.x}, Happiness Score ${context.raw.y}`;
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <p style="margin-top: 20px;">The scatter plots above reveal the relationships between bikeability scores, median sales prices, and happiness scores. While there appears to be no direct correlation between bikeability and median sales prices, some cities with higher bikeability scores tend to have higher happiness scores. This suggests that bikeability may contribute to overall happiness in a city.</p>
+
+    <div class="citations">
+        <strong>Citations:</strong><br>
+        1. Bikeability Scores and Median Home Prices: Redfin Blog, "The 10 Most Bikeable Cities in the U.S." (2024).<br>
+        2. Happiness Scores: WalletHub, "Happiest Cities in America 2024." (2024).
+    </div>
+</div>
